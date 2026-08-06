@@ -2061,7 +2061,7 @@
 
 <!-- ── BOTÓN FLOTANTE WHATSAPP SOPORTE ──────────────────────────────── -->
 <a href="https://wa.me/573217864845" target="_blank" id="wa-float-btn"
-   style="position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:10000;text-decoration:none;transition:transform .2s"
+   style="position:fixed;right:40px;bottom:90px;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);z-index:10000;text-decoration:none;transition:transform .44s cubic-bezier(.22,1,.36,1),opacity .3s"
    onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"
    title="Soporte por WhatsApp">
   <i class="bi bi-whatsapp" style="color:#fff;font-size:28px"></i>
@@ -2076,7 +2076,7 @@
 #login-overlay{display:block}
 #lf-drawer{position:absolute;right:0;top:0;bottom:0;width:420px;background:rgba(255,255,255,.82);backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);border-left:1px solid rgba(255,255,255,.5);box-shadow:-24px 0 60px rgba(0,0,0,.28);transform:translateX(100%);transition:transform .44s cubic-bezier(.22,1,.36,1);overflow-y:auto;z-index:10;padding:52px 44px;box-sizing:border-box}
 #lf-drawer.open{transform:translateX(0)}
-#lf-partners.lf-shift{transform:translateX(-460px);opacity:.55}
+#wa-float-btn.lf-shift{transform:translateX(-90px)!important;opacity:.55!important}
 
 #lf-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.38);opacity:0;transition:opacity .35s;pointer-events:none;z-index:9}
 #lf-backdrop.visible{opacity:1;pointer-events:auto}
@@ -2215,13 +2215,13 @@
 function abrirFormLogin(){
   document.getElementById('lf-drawer').classList.add('open');
   document.getElementById('lf-backdrop').classList.add('visible');
-  var p=document.getElementById('lf-partners');if(p)p.classList.add('lf-shift');
+  var w=document.getElementById('wa-float-btn');if(w)w.classList.add('lf-shift');
   setTimeout(function(){var e=document.getElementById('login-email');if(e)e.focus();},450);
 }
 function cerrarFormLogin(){
   document.getElementById('lf-drawer').classList.remove('open');
   document.getElementById('lf-backdrop').classList.remove('visible');
-  var p=document.getElementById('lf-partners');if(p)p.classList.remove('lf-shift');
+  var w=document.getElementById('wa-float-btn');if(w)w.classList.remove('lf-shift');
 }
 </script>
 
