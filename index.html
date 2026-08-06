@@ -11029,6 +11029,7 @@ const _ISLAND = (function() {
 })();
 
 _auth.onAuthStateChanged(async function(user) {
+  console.log('[SIGEI-DEBUG] onAuthStateChanged fired, user:', user && user.email);
   const overlay = document.getElementById('login-overlay');
   if (user) {
     // Show loading indicator inside overlay without replacing the form
@@ -11037,9 +11038,13 @@ _auth.onAuthStateChanged(async function(user) {
     const btn = document.getElementById('login-btn');
     if (btn) { btn.textContent = 'Cargando...'; btn.disabled = true; }
     try {
+      console.log('[SIGEI-DEBUG] antes de initEncKey');
       await initEncKey(user.uid);   // deriva clave AES-GCM del UID antes de cargar datos
+      console.log('[SIGEI-DEBUG] initEncKey listo, antes de DB.loadAll');
       await DB.loadAll();
+      console.log('[SIGEI-DEBUG] DB.loadAll listo');
     } catch(e) {
+      console.error('[SIGEI-DEBUG] ERROR en try/catch:', e);
       const errEl = document.getElementById('login-error');
       if (errEl) { errEl.textContent = 'Error al cargar datos: ' + e.message; errEl.style.display = 'block'; }
       if (btn)   { btn.textContent = 'Iniciar sesión'; btn.disabled = false; }
