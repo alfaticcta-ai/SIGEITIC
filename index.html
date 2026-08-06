@@ -11029,7 +11029,6 @@ const _ISLAND = (function() {
 })();
 
 _auth.onAuthStateChanged(async function(user) {
-  console.log('[SIGEI-DEBUG] onAuthStateChanged fired, user:', user && user.email);
   const overlay = document.getElementById('login-overlay');
   if (user) {
     // Show loading indicator inside overlay without replacing the form
@@ -11038,24 +11037,18 @@ _auth.onAuthStateChanged(async function(user) {
     const btn = document.getElementById('login-btn');
     if (btn) { btn.textContent = 'Cargando...'; btn.disabled = true; }
     try {
-      console.log('[SIGEI-DEBUG] antes de initEncKey');
       await initEncKey(user.uid);   // deriva clave AES-GCM del UID antes de cargar datos
-      console.log('[SIGEI-DEBUG] initEncKey listo, antes de DB.loadAll');
       await DB.loadAll();
-      console.log('[SIGEI-DEBUG] DB.loadAll listo');
     } catch(e) {
-      console.error('[SIGEI-DEBUG] ERROR en try/catch:', e);
       const errEl = document.getElementById('login-error');
       if (errEl) { errEl.textContent = 'Error al cargar datos: ' + e.message; errEl.style.display = 'block'; }
       if (btn)   { btn.textContent = 'Iniciar sesión'; btn.disabled = false; }
       if (loadEl) loadEl.style.display = 'none';
       return;
     }
-    console.log('[SIGEI-DEBUG] antes de check TOTP, userRecord:', (DB.get('usuarios')||[]).find(function(u){ return u.email === user.email; }));
     // Comprobar si el usuario tiene 2FA activado
     const userRecord = (DB.get('usuarios')||[]).find(function(u){ return u.email === user.email; });
     if (userRecord && userRecord.totp_enabled && userRecord.totp_secret) {
-      console.log('[SIGEI-DEBUG] entra a rama TOTP');
       // Mostrar panel 2FA en lugar de abrir la app
       const loginForm   = overlay.querySelector('form, [id="login-error"]')?.closest('[style]');
       document.querySelectorAll('#login-overlay > div:last-child > *:not(#totp-login-panel)').forEach(function(el){
@@ -11074,9 +11067,7 @@ _auth.onAuthStateChanged(async function(user) {
       return; // No abrir la app todavía
     }
 
-    console.log('[SIGEI-DEBUG] antes de ocultar overlay');
     overlay.style.display = 'none';
-    console.log('[SIGEI-DEBUG] overlay oculto, display ahora:', overlay.style.display);
     const emailEl = document.getElementById('user-email-display');
     if (emailEl) emailEl.textContent = user.email;
     // Sync topbar avatar initials
@@ -11091,14 +11082,8 @@ _auth.onAuthStateChanged(async function(user) {
         const now = new Date();
         dateEl.textContent = now.toLocaleDateString('es-CO', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
       }
-      console.log('[SIGEI-DEBUG] antes de navigate dashboard');
-      try {
-        applyDarkPref(); cargarRolUsuario(); Object.keys(_cache).forEach(function(c){ if(Array.isArray(_cache[c])) _cache['_prev_'+c]=_cache[c].slice(); }); navigate('dashboard'); _appLoaded = true;
-        _motionInit();
-        console.log('[SIGEI-DEBUG] dashboard cargado OK');
-      } catch(navErr) {
-        console.error('[SIGEI-DEBUG] ERROR cargando dashboard:', navErr);
-      }
+      applyDarkPref(); cargarRolUsuario(); Object.keys(_cache).forEach(function(c){ if(Array.isArray(_cache[c])) _cache['_prev_'+c]=_cache[c].slice(); }); navigate('dashboard'); _appLoaded = true;
+      _motionInit();
     }
   } else {
     // Not logged in — just show the overlay (no reload)
