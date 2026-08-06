@@ -4390,9 +4390,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const _auth = firebase.auth();
 const _fs   = firebase.firestore();
-// Evita la demora inicial de deteccion automatica de canal (comun en redes
-// institucionales con proxy/firewall) forzando long-polling directo.
-_fs.settings({ experimentalForceLongPolling: true, merge: true });
 
 // ── In-memory cache + DB API ────────────────────────────────────────────
 let _cache = {};
